@@ -1,39 +1,40 @@
 var wd = require('macaca-wd');
 var conf = {
-  host : 'localhost',
-  port : 3456
+  host: 'localhost',
+  port: 3456
 };
-var driver = wd.promiseChainRemote(conf);
-
-describe('第一个测试',function(){
+describe('第一个测试', function() {
   this.timeout(5 * 60 * 1000);
-  before(function() {
-    return driver.init({
-      platformName: 'desktop',
-      browserName: 'chrome'
-    })
-    .maximize()
+  var driver = wd.promiseChainRemote(conf);
+  before(() => {
+    return driver
+      .init({
+        platformName: 'desktop',
+        browserName: 'chrome',
+        userAgent: `Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0 Safari/537.36 Macaca Custom UserAgent`,
+        // deviceScaleFactor: 2
+      })
+      .setWindowSize(1280, 800);
+    // .maximize()
   });
 
-  it('open',function(){
-    return driver
-    .get("http://www.baidu.com/")
-  })
 
   it('click',function(){
     return driver
+    .get("http://www.baidu.com/")
+    .sleep(3000)
     .elementById('kw')
-    .sendKeys('来啊~搜索啊~')
+    .keys('run this')
+    .sleep(3000)
     .elementById('su')
     .click()
+    .sleep(5000)
   })
-
-
 
 
   after(function() {
     return driver
-      .sleep(1000)
+      .sleep(10000)
       .quit();
   });
 
